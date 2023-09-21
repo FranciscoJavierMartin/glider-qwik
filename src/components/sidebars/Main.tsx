@@ -90,6 +90,8 @@ export default component$(() => {
                 <div class='flex-it'>
                   <div class='w-10 h-10 overflow-visible'>
                     <img
+                      height={41}
+                      width={38}
                       class='rounded-full'
                       src='https://www.pinclipart.com/picdir/middle/133-1331433_free-user-avatar-icons-happy-flat-design-png.png'
                     ></img>
