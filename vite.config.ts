@@ -11,5 +11,8 @@ export default defineConfig(() => {
         "Cache-Control": "public, max-age=600",
       },
     },
+    server:{
+      port: 3501
+    }
   };
 });
