@@ -26,6 +26,7 @@
   "devDependencies": {
     "@builder.io/qwik": "^1.2.12",
     "@builder.io/qwik-city": "^1.2.12",
+    "@tailwindcss/forms": "^0.5.6",
     "@types/eslint": "8.44.1",
     "@types/node": "^20.4.5",
     "@typescript-eslint/eslint-plugin": "6.2.0",

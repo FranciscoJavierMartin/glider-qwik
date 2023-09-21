@@ -25,7 +25,7 @@ export default component$(() => {
                   <a class='flex-it items-start flex-grow w-full' href='#'>
                     <div class='p-3 flex-row justify-center items-center flex-it rounded-3xl hover:bg-gray-800 hover:rounded-3xl transition duration-200'>
                       <div class='flex-it'>
-                        <HiHomeOutline size={24} />
+                        <HiHomeOutline />
                       </div>
                       <div class='mx-4 text-2xl truncate xl:block hidden'>
                         <span class='truncate'>Home</span>
@@ -35,7 +35,7 @@ export default component$(() => {
                   <a class='flex-it items-start flex-grow w-full' href='#'>
                     <div class='p-3 flex-row justify-center items-center flex-it rounded-3xl hover:bg-gray-800 hover:rounded-3xl transition duration-200'>
                       <div class='flex-it'>
-                        <HiUserCircleOutline size={24} />
+                        <HiUserCircleOutline />
                       </div>
                       <div class='mx-4 text-2xl truncate xl:block hidden'>
                         <span class='truncate'>Profile</span>
@@ -55,7 +55,7 @@ export default component$(() => {
                   <a class='flex-it items-start flex-grow w-full' href='#'>
                     <div class='p-3 flex-row justify-center items-center flex-it rounded-3xl hover:bg-gray-800 hover:rounded-3xl transition duration-200'>
                       <div class='flex-it'>
-                        <HiBellOutline size={24} />
+                        <HiBellOutline />
                       </div>
                       <div class='mx-4 text-2xl truncate xl:block hidden'>
                         <span class='truncate'>Notification</span>
@@ -65,7 +65,7 @@ export default component$(() => {
                   <a class='flex-it items-start flex-grow w-full' href='#'>
                     <div class='p-3 flex-row justify-center items-center flex-it rounded-3xl hover:bg-gray-800 hover:rounded-3xl transition duration-200'>
                       <div class='flex-it'>
-                        <HiMapOutline size={24} />
+                        <HiMapOutline />
                       </div>
                       <div class='mx-4 text-2xl truncate xl:block hidden'>
                         <span class='truncate'>Discover</span>
