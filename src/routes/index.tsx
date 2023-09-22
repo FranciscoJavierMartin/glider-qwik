@@ -1,12 +1,32 @@
-import { component$ } from '@builder.io/qwik';
-import {
-  HiPhotoOutline,
-  HiTrashOutline,
-  HiChatBubbleOvalLeftEllipsisOutline,
-  HiHeartOutline,
-} from '@qwikest/icons/heroicons';
+import GlidePost from '@/components/glides/GlidePost';
+import type { Glide } from '@/types/glide';
+import { $, component$, useSignal } from '@builder.io/qwik';
+import { HiPhotoOutline } from '@qwikest/icons/heroicons';
 
 export default component$(() => {
+  const content = useSignal<string>('');
+  const glides = useSignal<Glide[]>([]);
+
+  const createGlide = $(() => {
+    glides.value = [
+      {
+        content: content.value,
+        date: new Date(),
+        id: Math.random().toString(16).slice(2),
+        likesCount: 0,
+        subglidesCount: 0,
+        user: {
+          nickName: 'John',
+          avatar:
+            'https://www.pinclipart.com/picdir/middle/133-1331433_free-user-avatar-icons-happy-flat-design-png.png',
+        },
+      },
+      ...glides.value,
+    ];
+
+    content.value = '';
+  });
+
   return (
     <>
       <div class='flex-it py-1 px-4 flex-row'>
@@ -24,6 +44,7 @@ export default component$(() => {
         <div class='flex-it flex-grow'>
           <div class='flex-it'>
             <textarea
+              bind:value={content}
               name='content'
               rows={1}
               id='glide'
@@ -40,6 +61,7 @@ export default component$(() => {
             </div>
             <div class='flex-it w-32 mt-3 cursor-pointer'>
               <button
+                onClick$={createGlide}
                 type='button'
                 class='
                         disabled:cursor-not-allowed disabled:bg-gray-400
@@ -56,47 +78,9 @@ export default component$(() => {
       </div>
       <div class='h-px bg-gray-700 my-1' />
       {/* GLIDE POST START */}
-      <div class='flex-it p-4 border-b-1 border-solid border-gray-700'>
-        <div class='flex-it flex-row'>
-          <div class='flex-it mr-4'>
-            <div class='w-12 h-12 overflow-visible cursor-pointer transition duration-200 hover:opacity-80'>
-              <img
-                class='rounded-full'
-                height={50}
-                width={45}
-                src='https://www.pinclipart.com/picdir/middle/133-1331433_free-user-avatar-icons-happy-flat-design-png.png'
-              />
-            </div>
-          </div>
-          <article class='flex-it flex-grow flex-shrink cursor-pointer'>
-            <div class='flex-it justify-center flex-grow mb-1'>
-              <div class='flex-it justify-between flex-row w-full'>
-                <div>
-                  <span class='font-bold'>Filip99</span>
-                  <span class='mx-2'>&#8226;</span>
-                  <span class='text-gray-400'>2h</span>
-                </div>
-                <div class='text-gray-400 cursor-pointer transition hover:text-red-400'>
-                  <HiTrashOutline class='h-5 w-5' />
-                </div>
-              </div>
-            </div>
-            <div class='flex-it flex-row flex-grow-0 items-center mb-2'>
-              <div class='flex-it mr-3 mb-3 w-full'>My First Post</div>
-            </div>
-            <div class='flex-it flex-row flex-grow text-gray-400'>
-              <div class='flex-it flex-row items-center cursor-pointer mr-5 transition hover:text-blue-400'>
-                <HiChatBubbleOvalLeftEllipsisOutline class='h-5 w-5' />
-                <span class='text-xs ml-3'>321</span>
-              </div>
-              <div class='flex-it flex-row items-center cursor-pointer transition hover:text-pink-400'>
-                <HiHeartOutline class='h-5 w-5' />
-                <span class='text-xs ml-3'>123</span>
-              </div>
-            </div>
-          </article>
-        </div>
-      </div>
+      {glides.value.map((glide) => (
+        <GlidePost glide={glide} key={glide.id} />
+      ))}
     </>
   );
 });

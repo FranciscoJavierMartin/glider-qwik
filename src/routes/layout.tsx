@@ -1,7 +1,7 @@
 import { Slot, component$ } from '@builder.io/qwik';
 import type { DocumentHead } from '@builder.io/qwik-city';
-import MainSidebar from '~/components/sidebars/Main';
-import TrendsSidebar from '~/components/sidebars/Trends';
+import MainSidebar from '@/components/sidebars/Main';
+import TrendsSidebar from '@/components/sidebars/Trends';
 
 export default component$(() => {
   return (

@@ -76,7 +76,7 @@ export default component$(() => {
                 </nav>
               </div>
               {/* GLIDER SEND-MESSAGE BUTTON */}
-              <div class='my-1 flex-it w-10/12 cursor-pointer'>
+              <div class='my-1 flex-it w-10/12 cursor-pointer items-center xl:items-stretch'>
                 <div class='bg-blue-400 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full flex-it transition hidden xl:flex'>
                   <div class='flex-it flex-row text-xl font-bold text-white items-start justify-center truncate duration-200'>
                     <div>Glide It</div>
