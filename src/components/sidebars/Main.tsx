@@ -61,7 +61,7 @@ export default component$(() => {
                       width={38}
                       class='rounded-full'
                       src='https://www.pinclipart.com/picdir/middle/133-1331433_free-user-avatar-icons-happy-flat-design-png.png'
-                    ></img>
+                    />
                   </div>
                 </div>
                 <div class='flex-it xl:flex hidden flex-grow flex-row justify-between items-center'>
