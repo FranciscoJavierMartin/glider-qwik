@@ -1,10 +1,11 @@
 import { component$ } from '@builder.io/qwik';
 import { Link } from '@builder.io/qwik-city';
 import {
-  HiEllipsisHorizontalOutline,
+  // HiEllipsisHorizontalOutline,
   HiPencilSquareOutline,
 } from '@qwikest/icons/heroicons';
 import { links } from './links';
+import Popup from '../portal/Popup';
 
 export default component$(() => {
   return (
@@ -53,7 +54,8 @@ export default component$(() => {
             {/* PROFILE MENU */}
             <div class='flex-it hover:cursor-pointer'>
               {/* POPUP START*/}
-              <div class='flex-it my-3 items-center flex-row p-3 rounded-3xl hover:bg-gray-800 hover:rounded-3xl transition duration-200 cursor-pointer'>
+              <Popup />
+              {/* <div class='flex-it my-3 items-center flex-row p-3 rounded-3xl hover:bg-gray-800 hover:rounded-3xl transition duration-200 cursor-pointer'>
                 <div class='flex-it'>
                   <div class='w-10 h-10 overflow-visible'>
                     <img
@@ -70,7 +72,7 @@ export default component$(() => {
                     <HiEllipsisHorizontalOutline />
                   </div>
                 </div>
-              </div>
+              </div> */}
               {/* POPUP END */}
             </div>
           </div>
