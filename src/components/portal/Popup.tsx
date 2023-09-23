@@ -49,14 +49,38 @@ export const PopupExample = component$<{
   const popup = useSignal<HTMLDivElement>();
   const portalClose = useContext(PortalCloseAPI);
 
-  useVisibleTask$(({ track }) => {
-    track(() => popup.value);
-
+  const adjustPopup = $((): void => {
     if (popup.value && followTo.value) {
       const position = followTo.value.getBoundingClientRect();
       popup.value.style.left = position.left + 'px';
       popup.value.style.bottom = 20 + followTo.value.clientHeight + 'px';
     }
+  });
+
+  const isPopupClicked = $((e: MouseEvent): boolean => {
+    return !!popup.value?.contains(e.target as Node);
+  });
+
+  const closePopup = $(async (e: MouseEvent): Promise<void> => {
+    if (await isPopupClicked(e)) {
+      await portalClose();
+    }
+  });
+
+  useVisibleTask$(({ track }) => {
+    track(() => popup.value);
+
+    adjustPopup();
+  });
+
+  useVisibleTask$(({ cleanup }) => {
+    window.addEventListener('resize', adjustPopup);
+    window.addEventListener('click', closePopup);
+
+    cleanup(() => {
+      window.removeEventListener('resize', adjustPopup);
+      window.removeEventListener('click', closePopup);
+    });
   });
 
   return (
