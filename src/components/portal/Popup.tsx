@@ -1,6 +1,6 @@
 import {
   $,
-  Signal,
+  type Signal,
   component$,
   useContext,
   useSignal,
@@ -8,14 +8,11 @@ import {
 } from '@builder.io/qwik';
 import { HiEllipsisHorizontalOutline } from '@qwikest/icons/heroicons';
 import { PortalCloseAPI, PortalAPI } from './PortalProvider';
-// import PopupExampleCSS from './popup-example.css?inline';
 
 export default component$(() => {
   const followTo = useSignal<HTMLDivElement>();
-  // Retrieve the portal API
   const portal = useContext(PortalAPI);
-  // This function is used to open the modal.
-  // Portals can be named and each portal can have multiple items rendered into it.
+
   const openModal = $(() => {
     portal('popup', <PopupExample followTo={followTo} />);
   });
@@ -46,13 +43,10 @@ export default component$(() => {
   );
 });
 
-// This component is shown as a modal.
 export const PopupExample = component$<{
   followTo: Signal<HTMLDivElement | undefined>;
 }>(({ followTo }) => {
   const popup = useSignal<HTMLDivElement>();
-  // useStylesScoped$(PopupExampleCSS);
-  // To close a portal retrieve the close API.
   const portalClose = useContext(PortalCloseAPI);
 
   useVisibleTask$(({ track }) => {

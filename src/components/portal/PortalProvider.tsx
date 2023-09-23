@@ -13,9 +13,7 @@ import {
   useTask$,
 } from '@builder.io/qwik';
 import { type JSXNode } from '@builder.io/qwik/jsx-runtime';
-// import CSS from './portal-provider.css?inline';
 
-// Define public API for opening up Portals
 export const PortalAPI = createContextId<
   /**
    * Add JSX to a portal.
@@ -29,11 +27,9 @@ export const PortalAPI = createContextId<
 
 export type ContextPair<T> = { id: ContextId<T>; value: T };
 
-// Define public API for closing Portals
 export const PortalCloseAPI =
   createContextId<QRL<() => void>>('PortalCloseAPI');
 
-// internal context for managing portals
 const Portals = createContextId<Signal<Portal[]>>('Portals');
 
 interface Portal {
@@ -47,7 +43,6 @@ export const PortalProvider = component$(() => {
   const portals = useSignal<Portal[]>([]);
   useContextProvider(Portals, portals);
 
-  // Provide the public API for the PopupManager for other components.
   useContextProvider(
     PortalAPI,
     $((name: string, jsx: JSXNode, contexts?: ContextPair<any>[]) => {
