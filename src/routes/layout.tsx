@@ -2,7 +2,7 @@ import { Slot, component$ } from '@builder.io/qwik';
 import type { DocumentHead } from '@builder.io/qwik-city';
 import MainSidebar from '@/components/sidebars/Main';
 import TrendsSidebar from '@/components/sidebars/Trends';
-import { Portal, PortalProvider } from '@/components/portal/PortalProvider';
+import { Portal, PortalProvider } from '@/providers/portal/PortalProvider';
 
 export default component$(() => {
   return (

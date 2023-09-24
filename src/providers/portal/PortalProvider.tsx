@@ -10,7 +10,6 @@ import {
   type ContextId,
   type QRL,
   type Signal,
-  useTask$,
 } from '@builder.io/qwik';
 import { type JSXNode } from '@builder.io/qwik/jsx-runtime';
 
@@ -55,11 +54,13 @@ export const PortalProvider = component$(() => {
       portal.close = $(() => {
         portals.value = portals.value.filter((p) => p !== portal);
       });
+
       portal.contexts.push({ id: PortalCloseAPI, value: portal.close });
       portals.value = [...portals.value, portal];
       return portal.close;
     })
   );
+
   return <Slot />;
 });
 
@@ -71,18 +72,12 @@ export const PortalProvider = component$(() => {
  */
 export const Portal = component$<{ name: string }>(({ name }) => {
   const portals = useContext(Portals);
-  // useStylesScoped$(CSS);
   const myPortals = portals.value.filter((portal) => portal.name === name);
-
-  useTask$(({ track }) => {
-    track(() => myPortals);
-    console.log(myPortals.length);
-  });
 
   return (
     <>
       {myPortals.map((portal, index) => (
-        <div class='modal' key={index}>
+        <div key={index}>
           <WrapJsxInContext jsx={portal.jsx} contexts={portal.contexts} />
         </div>
       ))}
@@ -96,6 +91,7 @@ export const WrapJsxInContext = component$<{
 }>(({ jsx, contexts }) => {
   // eslint-disable-next-line qwik/use-method-usage
   contexts.forEach(({ id, value }) => useContextProvider(id, value));
+
   return (
     <>
       {/* Workaround: https://github.com/BuilderIO/qwik/issues/4966 */}

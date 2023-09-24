@@ -1,11 +1,8 @@
 import { component$ } from '@builder.io/qwik';
 import { Link } from '@builder.io/qwik-city';
-import {
-  // HiEllipsisHorizontalOutline,
-  HiPencilSquareOutline,
-} from '@qwikest/icons/heroicons';
+import { HiPencilSquareOutline } from '@qwikest/icons/heroicons';
+import UserPopup from '@/components/popups/UserPopup';
 import { links } from './links';
-import Popup from '../portal/Popup';
 
 export default component$(() => {
   return (
@@ -53,9 +50,7 @@ export default component$(() => {
             </div>
             {/* PROFILE MENU */}
             <div class='flex-it hover:cursor-pointer'>
-              {/* POPUP START*/}
-              <Popup />
-              {/* POPUP END */}
+              <UserPopup />
             </div>
           </div>
         </div>
