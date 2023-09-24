@@ -3,8 +3,11 @@ import { Link } from '@builder.io/qwik-city';
 import { HiPencilSquareOutline } from '@qwikest/icons/heroicons';
 import UserPopup from '@/components/popups/UserPopup';
 import { links } from './links';
+import usePageSize from '@/hooks/pageSize';
 
 export default component$(() => {
+  const pageSize = usePageSize();
+
   return (
     <header class='lg:flex-grow flex-it items-end'>
       <div class='xl:w-80 w-20 flex-it'>
@@ -37,15 +40,16 @@ export default component$(() => {
                 </nav>
               </div>
               {/* GLIDER SEND-MESSAGE BUTTON */}
-              <div class='my-1 flex-it w-10/12 cursor-pointer items-center xl:items-stretch'>
-                <div class='bg-blue-400 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full flex-it transition hidden xl:flex'>
+              <div class='my-1 flex-it w-10/12 cursor-pointer'>
+                <div class='bg-blue-400 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full flex-it transition'>
                   <div class='flex-it flex-row text-xl font-bold text-white items-start justify-center truncate duration-200'>
-                    <div>Glide It</div>
+                    {pageSize.isXL.value ? (
+                      <div>Glide It</div>
+                    ) : (
+                      <HiPencilSquareOutline class='h-5 w-5' />
+                    )}
                   </div>
                 </div>
-                <button class='bg-blue-400 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full flex-it transition h-8 w-8 flex justify-center items-center xl:hidden'>
-                  <HiPencilSquareOutline class='h-5 w-5' />
-                </button>
               </div>
             </div>
             {/* PROFILE MENU */}
