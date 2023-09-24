@@ -5,8 +5,9 @@ import {
   useSignal,
   $,
   useVisibleTask$,
+  useOnWindow,
 } from '@builder.io/qwik';
-import { PortalCloseAPI } from '../../providers/portal/PortalProvider';
+import { PortalCloseAPI } from '@/providers/portal/PortalProvider';
 
 export default component$<{
   followTo: Signal<HTMLDivElement | undefined>;
@@ -22,11 +23,11 @@ export default component$<{
     }
   });
 
-  const isPopupClicked = $((e: MouseEvent): boolean => {
+  const isPopupClicked = $((e: Event): boolean => {
     return !!popup.value?.contains(e.target as Node);
   });
 
-  const closePopup = $(async (e: MouseEvent): Promise<void> => {
+  const closePopup = $(async (e: Event): Promise<void> => {
     if (!(await isPopupClicked(e))) {
       await portalClose();
     }
@@ -38,15 +39,8 @@ export default component$<{
     adjustPopup();
   });
 
-  useVisibleTask$(({ cleanup }) => {
-    window.addEventListener('resize', adjustPopup);
-    window.addEventListener('click', closePopup);
-
-    cleanup(() => {
-      window.removeEventListener('resize', adjustPopup);
-      window.removeEventListener('click', closePopup);
-    });
-  });
+  useOnWindow('resize', adjustPopup);
+  useOnWindow('click', closePopup);
 
   return (
     <div

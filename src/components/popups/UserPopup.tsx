@@ -1,6 +1,6 @@
 import { $, component$, useContext, useSignal } from '@builder.io/qwik';
 import { HiEllipsisHorizontalOutline } from '@qwikest/icons/heroicons';
-import { PortalAPI } from '../../providers/portal/PortalProvider';
+import { PortalAPI } from '@/providers/portal/PortalProvider';
 import UserLogout from '@/components/popups/UserLogout';
 
 export default component$(() => {

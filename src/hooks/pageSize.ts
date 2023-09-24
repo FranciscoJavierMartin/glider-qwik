@@ -11,12 +11,7 @@ const usePageSize = () => {
     sizes.width = document.body.clientWidth;
   });
 
-  useOnWindow(
-    'resize',
-    $(() => {
-      handleResize();
-    })
-  );
+  useOnWindow('resize', handleResize);
 
   const isXL = useComputed$<boolean>(() => sizes.width > 1280);
   const isLG = useComputed$<boolean>(() => sizes.width > 1024);
