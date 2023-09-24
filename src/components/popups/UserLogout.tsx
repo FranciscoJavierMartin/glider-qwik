@@ -8,12 +8,14 @@ import {
   useOnWindow,
 } from '@builder.io/qwik';
 import { PortalCloseAPI } from '@/providers/portal/PortalProvider';
+import usePageSize from '@/hooks/pageSize';
 
 export default component$<{
   followTo: Signal<HTMLDivElement | undefined>;
 }>(({ followTo }) => {
   const popup = useSignal<HTMLDivElement>();
   const portalClose = useContext(PortalCloseAPI);
+  const pageSize = usePageSize();
 
   const adjustPopup = $((): void => {
     if (popup.value && followTo.value) {
@@ -34,12 +36,11 @@ export default component$<{
   });
 
   useVisibleTask$(({ track }) => {
-    track(() => popup.value);
+    track(() => [popup.value, pageSize.sizes.width, pageSize.sizes.height]);
 
     adjustPopup();
   });
 
-  useOnWindow('resize', adjustPopup);
   useOnWindow('click', closePopup);
 
   return (
