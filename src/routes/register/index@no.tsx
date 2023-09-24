@@ -1,5 +1,5 @@
 import { component$ } from '@builder.io/qwik';
-import { Link } from '@builder.io/qwik-city';
+import { type DocumentHead, Link } from '@builder.io/qwik-city';
 
 export default component$(() => {
   return (
@@ -111,3 +111,13 @@ export default component$(() => {
     </div>
   );
 });
+
+export const head: DocumentHead = {
+  title: 'Glider Qwik',
+  meta: [
+    {
+      name: 'description',
+      content: 'Social network app',
+    },
+  ],
+};
