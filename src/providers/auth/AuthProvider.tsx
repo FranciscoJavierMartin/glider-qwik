@@ -5,6 +5,7 @@ import {
   useContextProvider,
   useStore,
   useVisibleTask$,
+  $,
 } from '@builder.io/qwik';
 import Loader from '@/components/loader/Loader';
 
@@ -23,10 +24,23 @@ export default component$(() => {
 
   useContextProvider(AuthContext, authState);
 
-  useVisibleTask$(() => {
-    setTimeout(() => {
+  const authenticateUser = $(async () => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(true);
+      }, 1000);
+    });
+  });
+
+  useVisibleTask$(async () => {
+    try {
+      await authenticateUser();
+      authState.isAuthenticated = true;
+    } catch (error) {
+      authState.isAuthenticated = false;
+    } finally {
       authState.isLoading = false;
-    }, 1000);
+    }
   });
 
   return authState.isLoading ? <Loader /> : <Slot />;
