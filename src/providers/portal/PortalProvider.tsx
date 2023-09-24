@@ -51,12 +51,16 @@ export const PortalProvider = component$(() => {
         close: null!,
         contexts: [...(contexts || [])],
       };
+
       portal.close = $(() => {
         portals.value = portals.value.filter((p) => p !== portal);
       });
 
-      portal.contexts.push({ id: PortalCloseAPI, value: portal.close });
-      portals.value = [...portals.value, portal];
+      if (!portals.value.some((p) => p.name === name)) {
+        portal.contexts.push({ id: PortalCloseAPI, value: portal.close });
+        portals.value = [...portals.value, portal];
+      }
+
       return portal.close;
     })
   );
