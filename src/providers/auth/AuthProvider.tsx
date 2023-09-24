@@ -29,5 +29,5 @@ export default component$(() => {
     }, 1000);
   });
 
-  return authState.isLoading ? <Loader size={100} /> : <Slot />;
+  return authState.isLoading ? <Loader /> : <Slot />;
 });
