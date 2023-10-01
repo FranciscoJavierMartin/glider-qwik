@@ -43,6 +43,8 @@
     "vite-tsconfig-paths": "4.2.0"
   },
   "dependencies": {
-    "@qwikest/icons": "^0.0.8"
+    "@qwikest/icons": "^0.0.8",
+    "@supabase/supabase-js": "^2.37.0",
+    "supabase-auth-helpers-qwik": "^0.0.3"
   }
 }

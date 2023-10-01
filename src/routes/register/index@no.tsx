@@ -7,6 +7,7 @@ import {
   zod$,
   z,
 } from '@builder.io/qwik-city';
+import { createServerClient } from 'supabase-auth-helpers-qwik';
 import ErrorMessages from '@/components/error-messages/ErrorMessages';
 
 const registerSchema = z
@@ -41,8 +42,28 @@ const registerSchema = z
     path: ['passwordConfirmation'],
   });
 
-export const useRegister = routeAction$(async (data) => {
-  console.log(data);
+export const useRegister = routeAction$(async (data, request) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { password, passwordConfirmation, ...userData } = data;
+
+  const supabaseClient = createServerClient(
+    request.env.get('PUBLIC_SUPABASE_URL')!,
+    request.env.get('PUBLIC_SUPABASE_ANON_KEY')!,
+    request
+  );
+
+  const response = await supabaseClient.auth.signUp({
+    email: data.email,
+    password: data.password,
+  });
+
+  if (response.data.user) {
+    await supabaseClient
+      .from('users')
+      .insert({ uid: response.data.user.id, ...userData });
+  }
+
+  return response;
 }, zod$(registerSchema));
 
 export default component$(() => {

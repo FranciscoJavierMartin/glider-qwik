@@ -7,6 +7,7 @@ import {
   z,
   routeAction$,
 } from '@builder.io/qwik-city';
+import { createServerClient } from 'supabase-auth-helpers-qwik';
 import ErrorMessages from '@/components/error-messages/ErrorMessages';
 
 const loginSchema = z.object({
@@ -17,8 +18,20 @@ const loginSchema = z.object({
     .string({ required_error: 'Password is required' })
     .min(4, 'Password should be more than 4 characters'),
 });
-export const useLogin = routeAction$(async (data) => {
-  console.log(data);
+
+export const useLogin = routeAction$(async (data, request) => {
+  const supabaseClient = createServerClient(
+    request.env.get('PUBLIC_SUPABASE_URL')!,
+    request.env.get('PUBLIC_SUPABASE_ANON_KEY')!,
+    request
+  );
+
+  const authToken = await supabaseClient.auth.signInWithPassword({
+    email: data.email,
+    password: data.password,
+  });
+
+  return authToken;
 }, zod$(loginSchema));
 
 export default component$(() => {
