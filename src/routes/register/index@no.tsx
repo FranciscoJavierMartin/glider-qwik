@@ -7,11 +7,20 @@ import {
   zod$,
   z,
 } from '@builder.io/qwik-city';
+import ErrorMessages from '@/components/error-messages/ErrorMessages';
 
 const registerSchema = z
   .object({
-    fullName: z.string(),
-    nickName: z.string(),
+    fullName: z
+      .string({ required_error: 'Full name is required' })
+      .min(7, 'Full name should be more than 7 characters')
+      .refine(
+        (fullName) => fullName,
+        'Full name first letter should be uppercased'
+      ),
+    nickName: z
+      .string({ required_error: 'Nickname is required' })
+      .min(4, 'Nickname should be more than 4 characters'),
     email: z.string().email(),
     avatar: z.string().url(),
     password: z.string(),
@@ -48,9 +57,10 @@ export default component$(() => {
                       id='fullName'
                       class='mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
                     />
-                    <div class='flex-it grow text-xs bg-red-400 text-white p-3 pl-3 mt-1 rounded-md'>
-                      Error Error Beep Beep!
-                    </div>
+                    <ErrorMessages
+                      failed={register.value?.failed}
+                      messages={register.value?.fieldErrors?.fullName}
+                    />
                   </div>
 
                   <div class='flex-it py-2'>
