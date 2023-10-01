@@ -21,10 +21,20 @@ const registerSchema = z
     nickName: z
       .string({ required_error: 'Nickname is required' })
       .min(4, 'Nickname should be more than 4 characters'),
-    email: z.string().email(),
-    avatar: z.string().url(),
-    password: z.string(),
-    passwordConfirmation: z.string(),
+    email: z
+      .string({ required_error: 'Email is required' })
+      .email('Email input is bad formatted'),
+    avatar: z
+      .string({ required_error: 'Avatar is required' })
+      .url('URL is bad formatted'),
+    password: z
+      .string({ required_error: 'Password is required' })
+      .min(4, 'Password should be more than 4 characters'),
+    passwordConfirmation: z
+      .string({
+        required_error: 'Password confirmation is required',
+      })
+      .min(4, 'Password Confirmation should be more than 4 characters'),
   })
   .refine((data) => data.password === data.passwordConfirmation, {
     message: 'Password should be same as Password confirmation',
@@ -73,6 +83,10 @@ export default component$(() => {
                       id='nickName'
                       class='mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
                     />
+                    <ErrorMessages
+                      failed={register.value?.failed}
+                      messages={register.value?.fieldErrors?.nickName}
+                    />
                   </div>
 
                   <div class='flex-it py-2'>
@@ -84,6 +98,10 @@ export default component$(() => {
                       name='email'
                       id='email'
                       class='mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+                    />
+                    <ErrorMessages
+                      failed={register.value?.failed}
+                      messages={register.value?.fieldErrors?.email}
                     />
                   </div>
 
@@ -97,6 +115,10 @@ export default component$(() => {
                       id='avatar'
                       class='mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
                     />
+                    <ErrorMessages
+                      failed={register.value?.failed}
+                      messages={register.value?.fieldErrors?.avatar}
+                    />
                   </div>
 
                   <div class='flex-it py-2'>
@@ -109,6 +131,10 @@ export default component$(() => {
                       id='password'
                       class='mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
                     />
+                    <ErrorMessages
+                      failed={register.value?.failed}
+                      messages={register.value?.fieldErrors?.password}
+                    />
                   </div>
 
                   <div class='flex-it py-2'>
@@ -120,6 +146,12 @@ export default component$(() => {
                       name='passwordConfirmation'
                       id='passwordConfirmation'
                       class='mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+                    />
+                    <ErrorMessages
+                      failed={register.value?.failed}
+                      messages={
+                        register.value?.fieldErrors?.passwordConfirmation
+                      }
                     />
                   </div>
                 </div>
