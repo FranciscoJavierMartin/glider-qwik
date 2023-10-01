@@ -165,6 +165,7 @@ export default component$(() => {
               <div class='flex-it py-2'>
                 <button
                   type='submit'
+                  disabled={register.isRunning}
                   class='
                   bg-blue-400 hover:bg-blue-500 focus:ring-0
                   disabled:cursor-not-allowed disabled:bg-gray-400

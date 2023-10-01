@@ -1,13 +1,35 @@
 import { component$ } from '@builder.io/qwik';
-import { type DocumentHead, Link } from '@builder.io/qwik-city';
+import {
+  type DocumentHead,
+  Link,
+  Form,
+  zod$,
+  z,
+  routeAction$,
+} from '@builder.io/qwik-city';
+import ErrorMessages from '@/components/error-messages/ErrorMessages';
+
+const loginSchema = z.object({
+  email: z
+    .string({ required_error: 'Email is required' })
+    .email('Email input is bad formatted'),
+  password: z
+    .string({ required_error: 'Password is required' })
+    .min(4, 'Password should be more than 4 characters'),
+});
+export const useRegister = routeAction$(async (data) => {
+  console.log(data);
+}, zod$(loginSchema));
 
 export default component$(() => {
+  const login = useRegister();
+
   return (
     <div class='flex-it justify-center items-center h-full'>
       <div class='text-white text-4xl font-bold'>Glider - Get In</div>
       <div class='mt-10 flex-it h-100 xs:w-100 w-full bg-white p-10 rounded-2xl'>
         <div class='flex-it'>
-          <form class='flex-it'>
+          <Form class='flex-it' action={login}>
             <div class='flex-it overflow-hidden sm:rounded-md'>
               <div class='flex-it'>
                 <div class='flex-it'>
@@ -21,9 +43,10 @@ export default component$(() => {
                       id='email'
                       class='mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
                     />
-                    <div class='flex-it grow text-xs bg-red-400 text-white p-3 pl-3 mt-1 rounded-md'>
-                      Error Error Beep Beep!
-                    </div>
+                    <ErrorMessages
+                      failed={login.value?.failed}
+                      messages={login.value?.fieldErrors?.email}
+                    />
                   </div>
                   <div class='flex-it py-2'>
                     <label class='block text-sm font-medium text-gray-700'>
@@ -34,6 +57,10 @@ export default component$(() => {
                       name='password'
                       id='password'
                       class='mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'
+                    />
+                    <ErrorMessages
+                      failed={login.value?.failed}
+                      messages={login.value?.fieldErrors?.password}
                     />
                   </div>
                 </div>
@@ -46,7 +73,8 @@ export default component$(() => {
               </div>
               <div class='flex-it py-2'>
                 <button
-                  type='button'
+                  type='submit'
+                  disabled={login.isRunning}
                   class='
                 bg-blue-400 hover:bg-blue-500
                 inline-flex focus:ring-0 disabled:cursor-not-allowed disabled:bg-gray-400 justify-center rounded-md border border-transparent py-2 px-4 text-sm font-medium text-white shadow-sm  focus:outline-none focus:ring-offset-2'
@@ -55,7 +83,7 @@ export default component$(() => {
                 </button>
               </div>
             </div>
-          </form>
+          </Form>
         </div>
       </div>
     </div>
