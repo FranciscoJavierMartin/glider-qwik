@@ -17,12 +17,12 @@ const loginSchema = z.object({
     .string({ required_error: 'Password is required' })
     .min(4, 'Password should be more than 4 characters'),
 });
-export const useRegister = routeAction$(async (data) => {
+export const useLogin = routeAction$(async (data) => {
   console.log(data);
 }, zod$(loginSchema));
 
 export default component$(() => {
-  const login = useRegister();
+  const login = useLogin();
 
   return (
     <div class='flex-it justify-center items-center h-full'>
