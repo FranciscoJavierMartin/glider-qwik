@@ -1,13 +1,40 @@
 import { component$ } from '@builder.io/qwik';
-import { type DocumentHead, Link } from '@builder.io/qwik-city';
+import {
+  type DocumentHead,
+  Link,
+  Form,
+  routeAction$,
+  zod$,
+  z,
+} from '@builder.io/qwik-city';
+
+const registerSchema = z
+  .object({
+    fullName: z.string(),
+    nickName: z.string(),
+    email: z.string().email(),
+    avatar: z.string().url(),
+    password: z.string(),
+    passwordConfirmation: z.string(),
+  })
+  .refine((data) => data.password === data.passwordConfirmation, {
+    message: 'Password should be same as Password confirmation',
+    path: ['passwordConfirmation'],
+  });
+
+export const useRegister = routeAction$(async (data) => {
+  console.log(data);
+}, zod$(registerSchema));
 
 export default component$(() => {
+  const register = useRegister();
+
   return (
     <div class='flex-it justify-center items-center h-full'>
       <div class='text-white text-4xl font-bold'>Glider - Create Account</div>
       <div class='mt-10 flex-it h-100 xs:w-100 w-full bg-white p-10 rounded-2xl'>
         <div class='flex-it'>
-          <form class='flex-it'>
+          <Form class='flex-it' action={register}>
             <div class='flex-it overflow-hidden sm:rounded-md'>
               <div class='flex-it'>
                 <div class='flex-it'>
@@ -95,7 +122,7 @@ export default component$(() => {
               </div>
               <div class='flex-it py-2'>
                 <button
-                  type='button'
+                  type='submit'
                   class='
                   bg-blue-400 hover:bg-blue-500 focus:ring-0
                   disabled:cursor-not-allowed disabled:bg-gray-400
@@ -105,7 +132,7 @@ export default component$(() => {
                 </button>
               </div>
             </div>
-          </form>
+          </Form>
         </div>
       </div>
     </div>
