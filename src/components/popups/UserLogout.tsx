@@ -51,11 +51,8 @@ export default component$<{
     );
 
     try {
-      const { error } = await supabaseClient.auth.signOut();
-      console.log('Mio');
-      console.log(error);
+      await supabaseClient.auth.signOut();
     } catch (error) {
-      console.log('Error');
       console.log(error);
     }
   });
@@ -68,7 +65,7 @@ export default component$<{
       <div class='w-72 min-w-68 max-h-120 min-h-8 flex-it overflow-auto'>
         <div class='flex-it flex-grow flex-shrink py-3'>
           <button
-            class='flex-it px-4 py-3 text-left transition hover:bg-gray-700'
+            class='flex-it px-4 py-3 text-start transition hover:bg-gray-700'
             onClick$={logout}
           >
             Logout

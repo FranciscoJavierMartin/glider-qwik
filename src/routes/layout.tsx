@@ -15,7 +15,7 @@ export const onRequest: RequestHandler = async (request) => {
   await supabaseClient.auth.reauthenticate();
   const session = await supabaseClient.auth.getSession();
 
-  if (!session.data) {
+  if (!session.data.session) {
     throw request.redirect(302, '/login/');
   }
 
