@@ -30,41 +30,43 @@ const registerSchema = z
       .url('URL is bad formatted'),
     password: z
       .string({ required_error: 'Password is required' })
-      .min(4, 'Password should be more than 4 characters'),
+      .min(6, 'Password should be more than 6 characters'),
     passwordConfirmation: z
       .string({
         required_error: 'Password confirmation is required',
       })
-      .min(4, 'Password Confirmation should be more than 4 characters'),
+      .min(6, 'Password Confirmation should be more than 6 characters'),
   })
   .refine((data) => data.password === data.passwordConfirmation, {
     message: 'Password should be same as Password confirmation',
     path: ['passwordConfirmation'],
   });
 
-export const useRegister = routeAction$(async (data, request) => {
+export const useRegister = routeAction$(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { password, passwordConfirmation, ...userData } = data;
+  async ({ password, passwordConfirmation, ...data }, request) => {
+    const supabaseClient = createServerClient(
+      request.env.get('PUBLIC_SUPABASE_URL')!,
+      request.env.get('PUBLIC_SUPABASE_ANON_KEY')!,
+      request
+    );
 
-  const supabaseClient = createServerClient(
-    request.env.get('PUBLIC_SUPABASE_URL')!,
-    request.env.get('PUBLIC_SUPABASE_ANON_KEY')!,
-    request
-  );
+    const response = await supabaseClient.auth.signUp({
+      email: data.email,
+      password,
+    });
 
-  const response = await supabaseClient.auth.signUp({
-    email: data.email,
-    password: data.password,
-  });
+    if (response.data.user) {
+      await supabaseClient.from('users').insert({
+        uid: response.data.user.id,
+        ...data,
+      });
+    }
 
-  if (response.data.user) {
-    await supabaseClient
-      .from('users')
-      .insert({ uid: response.data.user.id, ...userData });
-  }
-
-  return response;
-}, zod$(registerSchema));
+    return response;
+  },
+  zod$(registerSchema)
+);
 
 export default component$(() => {
   const register = useRegister();
