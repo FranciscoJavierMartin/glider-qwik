@@ -3,14 +3,10 @@ import type { DocumentHead, RequestHandler } from '@builder.io/qwik-city';
 import MainSidebar from '@/components/sidebars/Main';
 import TrendsSidebar from '@/components/sidebars/Trends';
 import { Portal, PortalProvider } from '@/providers/portal/PortalProvider';
-import { createServerClient } from 'supabase-auth-helpers-qwik';
+import { getSupabaseServerClient } from '@/utils/getSupabaseClient';
 
 export const onRequest: RequestHandler = async (request) => {
-  const supabaseClient = createServerClient(
-    request.env.get('PUBLIC_SUPABASE_URL')!,
-    request.env.get('PUBLIC_SUPABASE_ANON_KEY')!,
-    request
-  );
+  const supabaseClient = getSupabaseServerClient(request);
 
   await supabaseClient.auth.reauthenticate();
   const session = await supabaseClient.auth.getSession();

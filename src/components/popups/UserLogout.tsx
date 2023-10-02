@@ -7,9 +7,9 @@ import {
   useVisibleTask$,
   useOnWindow,
 } from '@builder.io/qwik';
-import { createBrowserClient } from 'supabase-auth-helpers-qwik';
 import { PortalCloseAPI } from '@/providers/portal/PortalProvider';
 import usePageSize from '@/hooks/pageSize';
+import { getSupabaseBrowserClient } from '@/utils/getSupabaseClient';
 
 export default component$<{
   followTo: Signal<HTMLDivElement | undefined>;
@@ -45,10 +45,7 @@ export default component$<{
   useOnWindow('click', closePopup);
 
   const logout = $(async () => {
-    const supabaseClient = createBrowserClient(
-      import.meta.env.PUBLIC_SUPABASE_URL,
-      import.meta.env.PUBLIC_SUPABASE_ANON_KEY
-    );
+    const supabaseClient = getSupabaseBrowserClient();
 
     try {
       await supabaseClient.auth.signOut();

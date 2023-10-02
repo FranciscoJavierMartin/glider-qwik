@@ -1,7 +1,7 @@
 import { component$ } from '@builder.io/qwik';
 import { Link, Form, routeAction$, zod$, z } from '@builder.io/qwik-city';
-import { createServerClient } from 'supabase-auth-helpers-qwik';
 import ErrorMessages from '@/components/error-messages/ErrorMessages';
+import { getSupabaseServerClient } from '@/utils/getSupabaseClient';
 
 const registerSchema = z
   .object({
@@ -38,11 +38,7 @@ const registerSchema = z
 export const useRegister = routeAction$(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async ({ password, passwordConfirmation, ...data }, request) => {
-    const supabaseClient = createServerClient(
-      request.env.get('PUBLIC_SUPABASE_URL')!,
-      request.env.get('PUBLIC_SUPABASE_ANON_KEY')!,
-      request
-    );
+    const supabaseClient = getSupabaseServerClient(request);
 
     const response = await supabaseClient.auth.signUp({
       email: data.email,

@@ -1,13 +1,13 @@
 import { Slot, component$ } from '@builder.io/qwik';
-import type { RequestHandler, DocumentHead } from '@builder.io/qwik-city';
-import { createServerClient } from 'supabase-auth-helpers-qwik';
+import type {
+  RequestHandler,
+  DocumentHead,
+  RequestEvent,
+} from '@builder.io/qwik-city';
+import { getSupabaseServerClient } from '@/utils/getSupabaseClient';
 
-export const onRequest: RequestHandler = async (request) => {
-  const supabaseClient = createServerClient(
-    request.env.get('PUBLIC_SUPABASE_URL')!,
-    request.env.get('PUBLIC_SUPABASE_ANON_KEY')!,
-    request
-  );
+export const onRequest: RequestHandler = async (request: RequestEvent) => {
+  const supabaseClient = getSupabaseServerClient(request);
 
   const session = await supabaseClient.auth.getSession();
 

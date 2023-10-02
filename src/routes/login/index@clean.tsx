@@ -1,7 +1,7 @@
 import { component$ } from '@builder.io/qwik';
 import { Link, Form, zod$, z, routeAction$ } from '@builder.io/qwik-city';
-import { createServerClient } from 'supabase-auth-helpers-qwik';
 import ErrorMessages from '@/components/error-messages/ErrorMessages';
+import { getSupabaseServerClient } from '@/utils/getSupabaseClient';
 
 const loginSchema = z.object({
   email: z
@@ -13,11 +13,7 @@ const loginSchema = z.object({
 });
 
 export const useLogin = routeAction$(async (data, request) => {
-  const supabaseClient = createServerClient(
-    request.env.get('PUBLIC_SUPABASE_URL')!,
-    request.env.get('PUBLIC_SUPABASE_ANON_KEY')!,
-    request
-  );
+  const supabaseClient = getSupabaseServerClient(request);
 
   const authToken = await supabaseClient.auth.signInWithPassword({
     email: data.email,
