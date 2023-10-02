@@ -13,9 +13,9 @@ export const onRequest: RequestHandler = async (request) => {
 
   if (session.data.session?.user.id) {
     throw request.redirect(302, new URL('/', request.url).toString());
-  } else {
-    await request.next();
   }
+
+  await request.next();
 };
 
 export default component$(() => {

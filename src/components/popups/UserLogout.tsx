@@ -7,6 +7,7 @@ import {
   useVisibleTask$,
   useOnWindow,
 } from '@builder.io/qwik';
+import { createBrowserClient } from 'supabase-auth-helpers-qwik';
 import { PortalCloseAPI } from '@/providers/portal/PortalProvider';
 import usePageSize from '@/hooks/pageSize';
 
@@ -43,6 +44,22 @@ export default component$<{
 
   useOnWindow('click', closePopup);
 
+  const logout = $(async () => {
+    const supabaseClient = createBrowserClient(
+      import.meta.env.PUBLIC_SUPABASE_URL,
+      import.meta.env.PUBLIC_SUPABASE_ANON_KEY
+    );
+
+    try {
+      const { error } = await supabaseClient.auth.signOut();
+      console.log('Mio');
+      console.log(error);
+    } catch (error) {
+      console.log('Error');
+      console.log(error);
+    }
+  });
+
   return (
     <div
       ref={popup}
@@ -50,9 +67,12 @@ export default component$<{
     >
       <div class='w-72 min-w-68 max-h-120 min-h-8 flex-it overflow-auto'>
         <div class='flex-it flex-grow flex-shrink py-3'>
-          <div class='flex-it px-4 py-3 transition hover:bg-gray-700'>
+          <button
+            class='flex-it px-4 py-3 text-left transition hover:bg-gray-700'
+            onClick$={logout}
+          >
             Logout
-          </div>
+          </button>
         </div>
       </div>
     </div>
