@@ -1,12 +1,5 @@
 import { component$ } from '@builder.io/qwik';
-import {
-  type DocumentHead,
-  Link,
-  Form,
-  routeAction$,
-  zod$,
-  z,
-} from '@builder.io/qwik-city';
+import { Link, Form, routeAction$, zod$, z } from '@builder.io/qwik-city';
 import { createServerClient } from 'supabase-auth-helpers-qwik';
 import ErrorMessages from '@/components/error-messages/ErrorMessages';
 
@@ -204,13 +197,3 @@ export default component$(() => {
     </div>
   );
 });
-
-export const head: DocumentHead = {
-  title: 'Glider Qwik',
-  meta: [
-    {
-      name: 'description',
-      content: 'Social network app',
-    },
-  ],
-};
