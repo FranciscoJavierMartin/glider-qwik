@@ -24,6 +24,8 @@ export const useLogin = routeAction$(async (data, request) => {
     password: data.password,
   });
 
+  request.redirect(302, '/');
+
   return authToken;
 }, zod$(loginSchema));
 

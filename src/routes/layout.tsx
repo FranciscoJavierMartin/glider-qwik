@@ -1,8 +1,26 @@
 import { Slot, component$ } from '@builder.io/qwik';
-import type { DocumentHead } from '@builder.io/qwik-city';
+import type { DocumentHead, RequestHandler } from '@builder.io/qwik-city';
 import MainSidebar from '@/components/sidebars/Main';
 import TrendsSidebar from '@/components/sidebars/Trends';
 import { Portal, PortalProvider } from '@/providers/portal/PortalProvider';
+import { createServerClient } from 'supabase-auth-helpers-qwik';
+
+export const onRequest: RequestHandler = async (request) => {
+  const supabaseClient = createServerClient(
+    request.env.get('PUBLIC_SUPABASE_URL')!,
+    request.env.get('PUBLIC_SUPABASE_ANON_KEY')!,
+    request
+  );
+
+  await supabaseClient.auth.reauthenticate();
+  const session = await supabaseClient.auth.getSession();
+
+  if (!session.data) {
+    request.redirect(302, '/login/');
+  }
+
+  await request.next();
+};
 
 export default component$(() => {
   return (
