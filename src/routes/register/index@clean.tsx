@@ -46,10 +46,14 @@ export const useRegister = routeAction$(
     });
 
     if (response.data.user) {
-      await supabaseClient.from('users').insert({
+      const { error } = await supabaseClient.from('users').insert({
         uid: response.data.user.id,
         ...data,
       });
+
+      if (!error) {
+        request.redirect(302, '/');
+      }
     }
 
     return response;

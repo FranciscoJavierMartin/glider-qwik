@@ -1,16 +1,10 @@
-import { Slot, component$, useVisibleTask$ } from '@builder.io/qwik';
-import {
-  useNavigate,
-  type DocumentHead,
-  type RequestHandler,
-} from '@builder.io/qwik-city';
+import { Slot, component$ } from '@builder.io/qwik';
+import { type DocumentHead, type RequestHandler } from '@builder.io/qwik-city';
 import MainSidebar from '@/components/sidebars/Main';
 import TrendsSidebar from '@/components/sidebars/Trends';
 import { Portal, PortalProvider } from '@/providers/portal/PortalProvider';
-import {
-  getSupabaseBrowserClient,
-  getSupabaseServerClient,
-} from '@/utils/getSupabaseClient';
+import { getSupabaseServerClient } from '@/utils/getSupabaseClient';
+import useAuthChange from '@/hooks/useAuthChange';
 
 export const onRequest: RequestHandler = async (request) => {
   const supabaseClient = getSupabaseServerClient(request);
@@ -26,16 +20,7 @@ export const onRequest: RequestHandler = async (request) => {
 };
 
 export default component$(() => {
-  const navigate = useNavigate();
-
-  useVisibleTask$(async () => {
-    const supabaseClient = getSupabaseBrowserClient();
-    supabaseClient.auth.onAuthStateChange(async (_event, session) => {
-      if (!session?.user.id) {
-        navigate('/login', { forceReload: true });
-      }
-    });
-  });
+  useAuthChange();
 
   return (
     <PortalProvider>
