@@ -2,10 +2,12 @@ import { $, component$, useContext, useSignal } from '@builder.io/qwik';
 import { HiEllipsisHorizontalOutline } from '@qwikest/icons/heroicons';
 import { PortalAPI } from '@/providers/portal/PortalProvider';
 import UserLogout from '@/components/popups/UserLogout';
+import { AuthContext } from '@/providers/auth/AuthProvider';
 
 export default component$(() => {
   const followTo = useSignal<HTMLDivElement>();
   const portal = useContext(PortalAPI);
+  const authState = useContext(AuthContext);
 
   const openPopup = $(() => {
     portal('popup', <UserLogout followTo={followTo} />);
@@ -28,7 +30,9 @@ export default component$(() => {
         </div>
       </div>
       <div class='flex-it xl:flex hidden flex-grow flex-row justify-between items-center'>
-        <div class='flex-it mx-3 font-bold'>Filip99</div>
+        <div class='flex-it mx-3 font-bold'>
+          {(authState.user as any)?.email}
+        </div>
         <div class='flex-it'>
           <HiEllipsisHorizontalOutline />
         </div>
