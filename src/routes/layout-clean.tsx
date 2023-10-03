@@ -1,10 +1,14 @@
-import { Slot, component$ } from '@builder.io/qwik';
-import type {
-  RequestHandler,
-  DocumentHead,
-  RequestEvent,
+import { Slot, component$, useVisibleTask$ } from '@builder.io/qwik';
+import {
+  type RequestHandler,
+  type DocumentHead,
+  type RequestEvent,
+  useNavigate,
 } from '@builder.io/qwik-city';
-import { getSupabaseServerClient } from '@/utils/getSupabaseClient';
+import {
+  getSupabaseBrowserClient,
+  getSupabaseServerClient,
+} from '@/utils/getSupabaseClient';
 
 export const onRequest: RequestHandler = async (request: RequestEvent) => {
   const supabaseClient = getSupabaseServerClient(request);
@@ -19,6 +23,18 @@ export const onRequest: RequestHandler = async (request: RequestEvent) => {
 };
 
 export default component$(() => {
+  const navigate = useNavigate();
+
+  useVisibleTask$(() => {
+    const supabaseClient = getSupabaseBrowserClient();
+
+    supabaseClient.auth.onAuthStateChange(async (_event, session) => {
+      if (session?.user.id) {
+        navigate('/', { forceReload: true });
+      }
+    });
+  });
+
   return <Slot />;
 });
 
