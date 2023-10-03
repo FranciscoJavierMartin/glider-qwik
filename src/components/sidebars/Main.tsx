@@ -3,7 +3,7 @@ import { Link } from '@builder.io/qwik-city';
 import { HiPencilSquareOutline } from '@qwikest/icons/heroicons';
 import UserPopup from '@/components/popups/UserPopup';
 import { links } from './links';
-import usePageSize from '@/hooks/pageSize';
+import usePageSize from '@/hooks/usePageSize';
 
 export default component$(() => {
   const pageSize = usePageSize();

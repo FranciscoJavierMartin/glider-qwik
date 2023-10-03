@@ -8,7 +8,7 @@ import {
   useOnWindow,
 } from '@builder.io/qwik';
 import { PortalCloseAPI } from '@/providers/portal/PortalProvider';
-import usePageSize from '@/hooks/pageSize';
+import usePageSize from '@/hooks/usePageSize';
 import { getSupabaseBrowserClient } from '@/utils/getSupabaseClient';
 
 export default component$<{
