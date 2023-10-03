@@ -12,7 +12,16 @@ const useAuthChange = (): void => {
 
     supabaseClient.auth.onAuthStateChange(async (_event, session) => {
       if (session?.user.id) {
-        authState.user = session.user;
+        // authState.user = session.user;
+
+        // const user = await supabaseClient
+        //   .from('users')
+        //   .select(
+        //     'uid,avatar,followersCount,followingCount,fullName,nickName,email'
+        //   )
+        //   .eq('uid', session.user.id)
+        //   .single();
+
         await navigate('/', { forceReload: true });
       } else {
         authState.user = null;
