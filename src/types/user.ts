@@ -4,8 +4,8 @@ export interface User {
   fullName: string;
   email: string;
   avatar: string;
-  // followers: DocumentReference[];
-  // following: DocumentReference[];
+  followers: string[];
+  following: string[];
   followersCount: number;
   followingCount: number;
 }

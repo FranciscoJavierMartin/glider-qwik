@@ -2,6 +2,7 @@ import { useContext, useVisibleTask$ } from '@builder.io/qwik';
 import { useNavigate } from '@builder.io/qwik-city';
 import { AuthContext } from '@/providers/auth/AuthProvider';
 import { getSupabaseBrowserClient } from '@/utils/getSupabaseClient';
+import { getUserProfile } from '@/utils/getUserProfile';
 
 const useAuthChange = (): void => {
   const navigate = useNavigate();
@@ -11,17 +12,8 @@ const useAuthChange = (): void => {
     const supabaseClient = getSupabaseBrowserClient();
 
     supabaseClient.auth.onAuthStateChange(async (_event, session) => {
-      if (session?.user.id) {
-        // authState.user = session.user;
-
-        // const user = await supabaseClient
-        //   .from('users')
-        //   .select(
-        //     'uid,avatar,followersCount,followingCount,fullName,nickName,email'
-        //   )
-        //   .eq('uid', session.user.id)
-        //   .single();
-
+      if (session?.user.id && authState.user?.uid !== session.user.id) {
+        authState.user = await getUserProfile(session.user.id);
         await navigate('/', { forceReload: true });
       } else {
         authState.user = null;

@@ -15,13 +15,15 @@ export const getSupabaseServerClient = (
   );
 };
 
+const supabaseClient = createBrowserClient(
+  import.meta.env.PUBLIC_SUPABASE_URL,
+  import.meta.env.PUBLIC_SUPABASE_ANON_KEY
+);
+
 export const getSupabaseBrowserClient = (): SupabaseClient<
   any,
   'public',
   any
 > => {
-  return createBrowserClient(
-    import.meta.env.PUBLIC_SUPABASE_URL,
-    import.meta.env.PUBLIC_SUPABASE_ANON_KEY
-  );
+  return supabaseClient;
 };
