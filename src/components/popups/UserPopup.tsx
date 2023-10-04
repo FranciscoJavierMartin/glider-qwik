@@ -25,14 +25,12 @@ export default component$(() => {
             height={41}
             width={38}
             class='rounded-full'
-            src='https://www.pinclipart.com/picdir/middle/133-1331433_free-user-avatar-icons-happy-flat-design-png.png'
+            src={authState.user?.avatar}
           />
         </div>
       </div>
       <div class='flex-it xl:flex hidden flex-grow flex-row justify-between items-center'>
-        <div class='flex-it mx-3 font-bold'>
-          {(authState.user as any)?.email}
-        </div>
+        <div class='flex-it mx-3 font-bold'>{authState.user?.nickName}</div>
         <div class='flex-it'>
           <HiEllipsisHorizontalOutline />
         </div>

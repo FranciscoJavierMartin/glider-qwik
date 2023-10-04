@@ -1,28 +1,30 @@
 import GlidePost from '@/components/glides/GlidePost';
+import { AuthContext } from '@/providers/auth/AuthProvider';
 import type { Glide } from '@/types/glide';
-import { $, component$, useSignal } from '@builder.io/qwik';
+import { $, component$, useContext, useSignal } from '@builder.io/qwik';
 import { HiPhotoOutline } from '@qwikest/icons/heroicons';
 
 export default component$(() => {
   const content = useSignal<string>('');
   const glides = useSignal<Glide[]>([]);
+  const authState = useContext(AuthContext);
 
   const createGlide = $(() => {
-    glides.value = [
-      {
-        content: content.value,
-        date: new Date(),
-        id: Math.random().toString(16).slice(2),
-        likesCount: 0,
-        subglidesCount: 0,
-        user: {
-          nickName: 'John',
-          avatar:
-            'https://www.pinclipart.com/picdir/middle/133-1331433_free-user-avatar-icons-happy-flat-design-png.png',
-        },
-      },
-      ...glides.value,
-    ];
+    // glides.value = [
+    //   {
+    //     content: content.value,
+    //     date: new Date(),
+    //     id: Math.random().toString(16).slice(2),
+    //     likesCount: 0,
+    //     subglidesCount: 0,
+    //     user: {
+    //       nickName: 'John',
+    //       avatar:
+    //         'https://www.pinclipart.com/picdir/middle/133-1331433_free-user-avatar-icons-happy-flat-design-png.png',
+    //     },
+    //   },
+    //   ...glides.value,
+    // ];
 
     content.value = '';
   });
@@ -36,7 +38,7 @@ export default component$(() => {
               height={50}
               width={45}
               class='rounded-full'
-              src='https://www.pinclipart.com/picdir/middle/133-1331433_free-user-avatar-icons-happy-flat-design-png.png'
+              src={authState.user?.avatar}
             />
           </div>
         </div>
