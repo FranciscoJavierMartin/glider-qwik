@@ -22,6 +22,7 @@ export const onRequest: RequestHandler = async (request) => {
 export default component$(() => {
   useAuthChange();
 
+  // TODO: Move to separate layout
   return (
     <PortalProvider>
       <div class='w-full h-full bg-gray-900 text-gray-100'>
@@ -49,6 +50,7 @@ export default component$(() => {
         </div>
       </div>
       <Portal name='popup' />
+      <Portal name='snackbar' />
     </PortalProvider>
   );
 });

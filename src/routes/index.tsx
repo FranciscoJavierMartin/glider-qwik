@@ -1,8 +1,11 @@
-import GlidePost from '@/components/glides/GlidePost';
-import { AuthContext } from '@/providers/auth/AuthProvider';
-import type { Glide } from '@/types/glide';
 import { $, component$, useContext, useSignal } from '@builder.io/qwik';
 import { HiPhotoOutline } from '@qwikest/icons/heroicons';
+import GlidePost from '@/components/glides/GlidePost';
+import SnackbarContainer from '@/components/snackbar/SnackbarContainer';
+import { AuthContext } from '@/providers/auth/AuthProvider';
+import { PortalAPI } from '@/providers/portal/PortalProvider';
+import type { Glide } from '@/types/glide';
+
 
 export default component$(() => {
   const content = useSignal<string>('');
@@ -28,6 +31,9 @@ export default component$(() => {
 
     content.value = '';
   });
+
+  const portal = useContext(PortalAPI);
+  portal('snackbar', <SnackbarContainer />);
 
   return (
     <>
