@@ -1,15 +1,31 @@
-import { component$, $ } from '@builder.io/qwik';
+import { component$, $, useVisibleTask$, useSignal } from '@builder.io/qwik';
 import { HiXMarkOutline } from '@qwikest/icons/heroicons';
 import type { SnackbarMessage } from '@/types/snackbar';
 import useSnackbar from '@/hooks/useSnackbar';
 
-type SnackbarProps = SnackbarMessage;
+type SnackbarProps = SnackbarMessage & { autoHideDuration?: number };
 
 export default component$<SnackbarProps>((props) => {
+  const duration = useSignal<number>(props.autoHideDuration || 2000);
   const { removeSnackbar } = useSnackbar();
 
   const remove = $(async () => {
     await removeSnackbar(props.id);
+  });
+
+  useVisibleTask$(async ({ track, cleanup }) => {
+    track(() => [duration.value]);
+
+    const timer = setInterval(() => {
+      duration.value -= 50;
+    }, 50);
+
+    if (duration.value <= 0) {
+      await remove();
+      clearInterval(timer);
+    }
+
+    cleanup(() => clearInterval(timer));
   });
 
   return (
