@@ -4,6 +4,7 @@ import MainSidebar from '@/components/sidebars/Main';
 import TrendsSidebar from '@/components/sidebars/Trends';
 import { getSupabaseServerClient } from '@/utils/getSupabaseClient';
 import useAuthChange from '@/hooks/useAuthChange';
+import useSnackbar from '@/hooks/useSnackbar';
 
 export const onRequest: RequestHandler = async (request) => {
   const supabaseClient = getSupabaseServerClient(request);
@@ -20,6 +21,7 @@ export const onRequest: RequestHandler = async (request) => {
 
 export default component$(() => {
   useAuthChange();
+  useSnackbar();
 
   return (
     <div class='w-full h-full bg-gray-900 text-gray-100'>

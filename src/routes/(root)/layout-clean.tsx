@@ -2,6 +2,7 @@ import { Slot, component$ } from '@builder.io/qwik';
 import type { RequestHandler, RequestEvent } from '@builder.io/qwik-city';
 import { getSupabaseServerClient } from '@/utils/getSupabaseClient';
 import useAuthChange from '@/hooks/useAuthChange';
+import useSnackbar from '@/hooks/useSnackbar';
 
 export const onRequest: RequestHandler = async (request: RequestEvent) => {
   const supabaseClient = getSupabaseServerClient(request);
@@ -17,6 +18,7 @@ export const onRequest: RequestHandler = async (request: RequestEvent) => {
 
 export default component$(() => {
   useAuthChange();
+  useSnackbar();
 
   return <Slot />;
 });
