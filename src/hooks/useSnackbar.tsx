@@ -1,8 +1,7 @@
-/* eslint-disable qwik/use-method-usage */
-import SnackbarContainer from '@/components/snackbar/SnackbarContainer';
-import { PortalAPI } from '@/providers/portal/PortalProvider';
-import { UIContext } from '@/providers/ui/UIProvider';
 import { useContext, useVisibleTask$, $ } from '@builder.io/qwik';
+import SnackbarContainer from '@/components/snackbar/SnackbarContainer';
+import { PortalAPI, PortalCloseAPI } from '@/providers/portal/PortalProvider';
+import { UIContext } from '@/providers/ui/UIProvider';
 
 const useSnackbar = () => {
   const portal = useContext(PortalAPI);
@@ -19,8 +18,14 @@ const useSnackbar = () => {
     ];
   });
 
-  useVisibleTask$(() => {
+  useVisibleTask$(({ cleanup }) => {
     portal('snackbar', <SnackbarContainer />);
+
+    cleanup(async () => {
+      // eslint-disable-next-line qwik/use-method-usage
+      const portalClose = useContext(PortalCloseAPI);
+      await portalClose();
+    });
   });
 
   return { addSnackbar };
