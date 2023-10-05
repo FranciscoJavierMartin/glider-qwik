@@ -2,7 +2,8 @@ import { Slot, component$ } from '@builder.io/qwik';
 import { type DocumentHead, type RequestHandler } from '@builder.io/qwik-city';
 import { Portal, PortalProvider } from '@/providers/portal/PortalProvider';
 import { getSupabaseServerClient } from '@/utils/getSupabaseClient';
-import useAuthChange from '@/hooks/useAuthChange';
+// import useAuthChange from '@/hooks/useAuthChange';
+import AuthProvider from '@/providers/auth/AuthProvider';
 
 export const onRequest: RequestHandler = async (request) => {
   const supabaseClient = getSupabaseServerClient(request);
@@ -18,14 +19,16 @@ export const onRequest: RequestHandler = async (request) => {
 };
 
 export default component$(() => {
-  useAuthChange();
+  // useAuthChange();
 
   return (
-    <PortalProvider>
-      <Slot />
-      <Portal name='popup' />
-      <Portal name='snackbar' />
-    </PortalProvider>
+    <AuthProvider>
+      <PortalProvider>
+        <Slot />
+        <Portal name='popup' />
+        <Portal name='snackbar' />
+      </PortalProvider>
+    </AuthProvider>
   );
 });
 
