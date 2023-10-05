@@ -1,10 +1,17 @@
-import { component$ } from '@builder.io/qwik';
+import { component$, $ } from '@builder.io/qwik';
 import { HiXMarkOutline } from '@qwikest/icons/heroicons';
 import type { SnackbarMessage } from '@/types/snackbar';
+import useSnackbar from '@/hooks/useSnackbar';
 
 type SnackbarProps = SnackbarMessage;
 
 export default component$<SnackbarProps>((props) => {
+  const { removeSnackbar } = useSnackbar();
+
+  const remove = $(async () => {
+    await removeSnackbar(props.id);
+  });
+
   return (
     <div
       class={[
@@ -23,7 +30,7 @@ export default component$<SnackbarProps>((props) => {
       ]}
     >
       <div class='flex-it flex-row-reverse p-1'>
-        <button class='text-xl rounded-full'>
+        <button class='text-xl rounded-full' onClick$={remove}>
           <HiXMarkOutline />
         </button>
       </div>
