@@ -21,7 +21,6 @@ export const onRequest: RequestHandler = async (request) => {
 export default component$(() => {
   useAuthChange();
 
-  // TODO: Move to separate layout
   return (
     <div class='w-full h-full bg-gray-900 text-gray-100'>
       <div class='flex h-full min-h-252'>
