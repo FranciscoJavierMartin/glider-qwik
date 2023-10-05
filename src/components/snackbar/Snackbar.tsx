@@ -8,6 +8,7 @@ export default component$(() => {
       </div>
       <div class='flex-it px-2 pb-3'>Hello world</div>
       <div
+        role='progressbar'
         style={{ width: `${100}%` }}
         class='bg-black opacity-40 text-right h-2'
       ></div>

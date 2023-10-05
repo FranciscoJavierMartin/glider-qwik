@@ -33,6 +33,7 @@ export default component$(() => {
   });
 
   const portal = useContext(PortalAPI);
+  // FIXME: This cause a problem during render. Remove ASAP
   portal('snackbar', <SnackbarContainer />);
 
   return (
