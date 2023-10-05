@@ -1,4 +1,10 @@
-import { component$, $, useVisibleTask$, useSignal } from '@builder.io/qwik';
+import {
+  component$,
+  $,
+  useVisibleTask$,
+  useSignal,
+  useComputed$,
+} from '@builder.io/qwik';
 import { HiXMarkOutline } from '@qwikest/icons/heroicons';
 import type { SnackbarMessage } from '@/types/snackbar';
 import useSnackbar from '@/hooks/useSnackbar';
@@ -7,6 +13,9 @@ type SnackbarProps = SnackbarMessage & { autoHideDuration?: number };
 
 export default component$<SnackbarProps>((props) => {
   const duration = useSignal<number>(props.autoHideDuration || 2000);
+  const progress = useComputed$<number>(() =>
+    Math.floor((duration.value / (props.autoHideDuration || 2000)) * 100)
+  );
   const { removeSnackbar } = useSnackbar();
 
   const remove = $(async () => {
@@ -53,7 +62,7 @@ export default component$<SnackbarProps>((props) => {
       <div class='flex-it px-2 pb-3'>{props.message}</div>
       <div
         role='progressbar'
-        style={{ width: `${100}%` }}
+        style={{ width: `${progress.value}%` }}
         class='bg-black opacity-40 text-right h-2'
       />
     </div>
