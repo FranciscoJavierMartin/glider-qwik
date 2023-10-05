@@ -18,7 +18,6 @@ export const onRequest: RequestHandler = async (request) => {
 };
 
 export default component$(() => {
-  // useAuthChange();
 
   return (
     <AuthProvider>
