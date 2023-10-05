@@ -1,22 +1,9 @@
 import { Slot, component$ } from '@builder.io/qwik';
-import { type DocumentHead, type RequestHandler } from '@builder.io/qwik-city';
+import { type DocumentHead } from '@builder.io/qwik-city';
 import { Portal, PortalProvider } from '@/providers/portal/PortalProvider';
-import { getSupabaseServerClient } from '@/utils/getSupabaseClient';
 import AuthProvider from '@/providers/auth/AuthProvider';
 import UIProvider from '@/providers/ui/UIProvider';
 
-export const onRequest: RequestHandler = async (request) => {
-  const supabaseClient = getSupabaseServerClient(request);
-
-  await supabaseClient.auth.reauthenticate();
-  const session = await supabaseClient.auth.getSession();
-
-  if (!session.data.session) {
-    throw request.redirect(302, '/login/');
-  }
-
-  await request.next();
-};
 // TODO: Try AuthWrapper
 export default component$(() => {
   return (
