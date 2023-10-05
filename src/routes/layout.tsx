@@ -3,6 +3,7 @@ import { type DocumentHead, type RequestHandler } from '@builder.io/qwik-city';
 import { Portal, PortalProvider } from '@/providers/portal/PortalProvider';
 import { getSupabaseServerClient } from '@/utils/getSupabaseClient';
 import AuthProvider from '@/providers/auth/AuthProvider';
+import UIProvider from '@/providers/ui/UIProvider';
 
 export const onRequest: RequestHandler = async (request) => {
   const supabaseClient = getSupabaseServerClient(request);
@@ -16,17 +17,18 @@ export const onRequest: RequestHandler = async (request) => {
 
   await request.next();
 };
-
+// TODO: Try AuthWrapper
 export default component$(() => {
-
   return (
-    <AuthProvider>
-      <PortalProvider>
-        <Slot />
-        <Portal name='popup' />
-        <Portal name='snackbar' />
-      </PortalProvider>
-    </AuthProvider>
+    <UIProvider>
+      <AuthProvider>
+        <PortalProvider>
+          <Slot />
+          <Portal name='popup' />
+          <Portal name='snackbar' />
+        </PortalProvider>
+      </AuthProvider>
+    </UIProvider>
   );
 });
 
