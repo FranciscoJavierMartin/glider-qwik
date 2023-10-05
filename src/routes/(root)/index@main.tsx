@@ -1,11 +1,16 @@
-import { $, component$, useContext, useSignal } from '@builder.io/qwik';
+import {
+  $,
+  component$,
+  useContext,
+  useSignal,
+  useVisibleTask$,
+} from '@builder.io/qwik';
 import { HiPhotoOutline } from '@qwikest/icons/heroicons';
 import GlidePost from '@/components/glides/GlidePost';
 import SnackbarContainer from '@/components/snackbar/SnackbarContainer';
 import { AuthContext } from '@/providers/auth/AuthProvider';
 import { PortalAPI } from '@/providers/portal/PortalProvider';
 import type { Glide } from '@/types/glide';
-
 
 export default component$(() => {
   const content = useSignal<string>('');
@@ -33,8 +38,10 @@ export default component$(() => {
   });
 
   const portal = useContext(PortalAPI);
-  // FIXME: This cause a problem during render. Remove ASAP
-  portal('snackbar', <SnackbarContainer />);
+  useVisibleTask$(() => {
+    // FIXME: This cause a problem during render. Remove ASAP
+    portal('snackbar', <SnackbarContainer />);
+  });
 
   return (
     <>
