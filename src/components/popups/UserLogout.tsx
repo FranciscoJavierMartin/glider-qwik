@@ -9,6 +9,7 @@ import {
 } from '@builder.io/qwik';
 import { PortalCloseAPI } from '@/providers/portal/PortalProvider';
 import usePageSize from '@/hooks/usePageSize';
+import useSnackbar from '@/hooks/useSnackbar';
 import { getSupabaseBrowserClient } from '@/utils/getSupabaseClient';
 
 export default component$<{
@@ -17,6 +18,7 @@ export default component$<{
   const popup = useSignal<HTMLDivElement>();
   const portalClose = useContext(PortalCloseAPI);
   const pageSize = usePageSize();
+  const { addSnackbar } = useSnackbar();
 
   const adjustPopup = $((): void => {
     if (popup.value && followTo.value) {
@@ -50,7 +52,7 @@ export default component$<{
     try {
       await supabaseClient.auth.signOut();
     } catch (error) {
-      console.log(error);
+      addSnackbar('Error on logout', 'error');
     }
   });
 

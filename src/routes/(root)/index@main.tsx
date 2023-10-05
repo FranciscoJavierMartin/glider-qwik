@@ -3,12 +3,13 @@ import { HiPhotoOutline } from '@qwikest/icons/heroicons';
 import GlidePost from '@/components/glides/GlidePost';
 import { AuthContext } from '@/providers/auth/AuthProvider';
 import type { Glide } from '@/types/glide';
+import useSnackbar from '@/hooks/useSnackbar';
 
 export default component$(() => {
   const content = useSignal<string>('');
   const glides = useSignal<Glide[]>([]);
   const authState = useContext(AuthContext);
-
+  const { addSnackbar } = useSnackbar();
   const createGlide = $(() => {
     // glides.value = [
     //   {
@@ -26,6 +27,7 @@ export default component$(() => {
     //   ...glides.value,
     // ];
 
+    addSnackbar('Glide added', 'success');
     content.value = '';
   });
 

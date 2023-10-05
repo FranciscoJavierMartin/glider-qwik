@@ -15,11 +15,7 @@ export const UIContext = createContextId<UIContextState>('ui-context');
 
 export default component$(() => {
   const uiContextState = useStore<UIContextState>({
-    snackbars: [
-      { id: '1', message: 'Message 1', type: 'success' },
-      { id: '2', message: 'Message 2', type: 'error' },
-      { id: '3', message: 'Message 3', type: 'warning' },
-    ],
+    snackbars: [],
   });
   useContextProvider(UIContext, uiContextState);
 
