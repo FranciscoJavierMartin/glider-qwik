@@ -1,9 +1,9 @@
-import { component$, useSignal } from '@builder.io/qwik';
+import { component$ } from '@builder.io/qwik';
 import GlidePost from '@/components/glides/GlidePost';
-import type { Glide } from '@/types/glide';
 import Messenger from '@/components/messenger/Messenger';
 import { routeAction$, z, zod$ } from '@builder.io/qwik-city';
 import { getSupabaseServerClient } from '@/utils/getSupabaseClient';
+import useGlides from '@/hooks/useGlide';
 
 export const useCreateGlide = routeAction$(
   async ({ content }, request) => {
@@ -31,14 +31,14 @@ export const useCreateGlide = routeAction$(
 );
 
 export default component$(() => {
-  const glides = useSignal<Glide[]>([]);
+  const { glideStore } = useGlides();
 
   return (
     <>
       <Messenger />
       <div class='h-px bg-gray-700 my-1' />
       {/* GLIDE POST START */}
-      {glides.value.map((glide) => (
+      {glideStore.pages[1].glides.map((glide) => (
         <GlidePost glide={glide} key={glide.id} />
       ))}
     </>

@@ -12,19 +12,19 @@ export default component$<{ glide: Glide }>(({ glide }) => {
       <div class='flex-it flex-row'>
         <div class='flex-it mr-4'>
           <div class='w-12 h-12 overflow-visible cursor-pointer transition duration-200 hover:opacity-80'>
-            <img
+            {/* <img
               class='rounded-full'
               src={glide.user.avatar}
               height={48}
               width={45}
-            />
+            /> */}
           </div>
         </div>
         <article class='flex-it flex-grow flex-shrink cursor-pointer'>
           <div class='flex-it justify-center flex-grow mb-1'>
             <div class='flex-it justify-between flex-row w-full'>
               <div>
-                <span class='font-bold'>{glide.user.nickName}</span>
+                {/* <span class='font-bold'>{glide.user.nickName}</span> */}
                 <span class='mx-2'>&#8226;</span>
                 <span class='text-gray-400'>2h</span>
               </div>

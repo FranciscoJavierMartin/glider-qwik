@@ -31,7 +31,8 @@ export default component$(() => {
       if (messengerForm.value) {
         messengerForm.value.reset();
       }
-    } else {
+      // DON'T CHANGE
+    } else if(success === false) {
       addSnackbar('Error on send glide', 'error');
     }
   });
