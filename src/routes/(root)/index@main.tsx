@@ -1,7 +1,7 @@
-import { component$ } from '@builder.io/qwik';
+import { Resource, component$, useResource$ } from '@builder.io/qwik';
+import { routeAction$, z, zod$ } from '@builder.io/qwik-city';
 import GlidePost from '@/components/glides/GlidePost';
 import Messenger from '@/components/messenger/Messenger';
-import { routeAction$, z, zod$ } from '@builder.io/qwik-city';
 import { getSupabaseServerClient } from '@/utils/getSupabaseClient';
 import useGlides from '@/hooks/useGlide';
 
@@ -31,17 +31,33 @@ export const useCreateGlide = routeAction$(
 );
 
 export default component$(() => {
-  const { glideStore, pageNumber } = useGlides();
+  const { glideStore, pageNumber, loadGlides } = useGlides();
+
+  const glides = useResource$(async () => {
+    await loadGlides();
+    return glideStore;
+  });
 
   return (
     <>
       <Messenger />
       <div class='h-px bg-gray-700 my-1' />
-      {Array.from({ length: pageNumber.value }).map((_, page) =>
-        glideStore.pages[page + 1].glides.map((glide) => (
-          <GlidePost key={glide.id} glide={glide} />
-        ))
-      )}
+      <Resource
+        value={glides}
+        onRejected={() => <p>Failed</p>}
+        onPending={() => <p>Loading...</p>}
+        onResolved={(glides) => {
+          return (
+            <>
+              {Array.from({ length: pageNumber.value }).map((_, page) =>
+                glides.pages[page + 1].glides.map((glide) => (
+                  <GlidePost key={glide.id} glide={glide} />
+                ))
+              )}
+            </>
+          );
+        }}
+      />
     </>
   );
 });

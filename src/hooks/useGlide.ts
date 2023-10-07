@@ -1,4 +1,4 @@
-import { $, useSignal, useStore, useTask$ } from '@builder.io/qwik';
+import { $, useSignal, useStore } from '@builder.io/qwik';
 import type { Glide } from '@/types/glide';
 
 type GlideStore = {
@@ -28,10 +28,6 @@ const useGlides = () => {
     } catch (error) {
       console.log(error);
     }
-  });
-
-  useTask$(() => {
-    loadGlides();
   });
 
   return { loadGlides, pageNumber, glideStore };
