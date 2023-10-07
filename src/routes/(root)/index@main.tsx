@@ -31,16 +31,17 @@ export const useCreateGlide = routeAction$(
 );
 
 export default component$(() => {
-  const { glideStore } = useGlides();
+  const { glideStore, pageNumber } = useGlides();
 
   return (
     <>
       <Messenger />
       <div class='h-px bg-gray-700 my-1' />
-      {/* GLIDE POST START */}
-      {glideStore.pages[1].glides.map((glide) => (
-        <GlidePost glide={glide} key={glide.id} />
-      ))}
+      {Array.from({ length: pageNumber.value }).map((_, page) =>
+        glideStore.pages[page + 1].glides.map((glide) => (
+          <GlidePost key={glide.id} glide={glide} />
+        ))
+      )}
     </>
   );
 });
