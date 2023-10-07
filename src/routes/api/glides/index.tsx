@@ -6,13 +6,13 @@ export const onGet: RequestHandler = async (requestEvent: RequestEvent) => {
 
   const response = await supabaseClient
     .from('glides')
-    .select('*')
+    .select(
+      'id, content, likesCount, subglidesCount, date, user:users (nickName, avatar)'
+    )
     .order('date', { ascending: false })
     .limit(10);
 
   const glides = response.data;
-
-  console.log(glides?.length);
 
   requestEvent.json(200, { glides });
 };
