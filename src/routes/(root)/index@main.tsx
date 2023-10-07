@@ -6,10 +6,22 @@ import { routeAction$, z, zod$ } from '@builder.io/qwik-city';
 import { getSupabaseServerClient } from '@/utils/getSupabaseClient';
 
 export const useCreateGlide = routeAction$(
-  async (data, request) => {
+  async ({ content }, request) => {
     const supabaseClient = getSupabaseServerClient(request);
+    const user = (await supabaseClient.auth.getSession()).data.session?.user;
+    let success: boolean = false;
 
-    console.log('Hello', data);
+    if (user) {
+      const { error } = await supabaseClient
+        .from('glides')
+        .insert({ uid: user.id, content });
+
+      if (!error) {
+        success = true;
+      }
+    }
+
+    return { success };
   },
   zod$({
     content: z

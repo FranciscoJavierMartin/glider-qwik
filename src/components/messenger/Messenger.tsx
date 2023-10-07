@@ -1,10 +1,17 @@
-import { component$, useContext, $ } from '@builder.io/qwik';
+import {
+  component$,
+  useContext,
+  $,
+  useSignal,
+  useTask$,
+} from '@builder.io/qwik';
 import { Form } from '@builder.io/qwik-city';
 import { HiPhotoOutline } from '@qwikest/icons/heroicons';
 import { useCreateGlide } from '@/routes/(root)/index@main';
 import { AuthContext } from '@/providers/auth/AuthProvider';
 
 export default component$(() => {
+  const messengerForm = useSignal<HTMLFormElement>();
   const authState = useContext(AuthContext);
   const createGlide = useCreateGlide();
 
@@ -13,6 +20,14 @@ export default component$(() => {
 
     element.style.height = '0px';
     element.style.height = `${element.scrollHeight}px`;
+  });
+
+  useTask$(({ track }) => {
+    const success = track(() => createGlide.value?.success);
+
+    if (success && messengerForm.value) {
+      messengerForm.value.reset();
+    }
   });
 
   return (
@@ -28,7 +43,7 @@ export default component$(() => {
         </div>
       </div>
       {/* MESSENGER START */}
-      <Form class='flex-it flex-grow' action={createGlide}>
+      <Form class='flex-it flex-grow' action={createGlide} ref={messengerForm}>
         <div class='flex-it'>
           <textarea
             name='content'
