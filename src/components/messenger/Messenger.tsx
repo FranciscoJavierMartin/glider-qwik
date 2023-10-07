@@ -3,17 +3,19 @@ import {
   useContext,
   $,
   useSignal,
-  useTask$,
+  useVisibleTask$,
 } from '@builder.io/qwik';
 import { Form } from '@builder.io/qwik-city';
 import { HiPhotoOutline } from '@qwikest/icons/heroicons';
 import { useCreateGlide } from '@/routes/(root)/index@main';
 import { AuthContext } from '@/providers/auth/AuthProvider';
+import useSnackbar from '@/hooks/useSnackbar';
 
 export default component$(() => {
   const messengerForm = useSignal<HTMLFormElement>();
   const authState = useContext(AuthContext);
   const createGlide = useCreateGlide();
+  const { addSnackbar } = useSnackbar();
 
   const autoSize = $((e: Event) => {
     const element = e.target as HTMLTextAreaElement;
@@ -22,11 +24,15 @@ export default component$(() => {
     element.style.height = `${element.scrollHeight}px`;
   });
 
-  useTask$(({ track }) => {
+  useVisibleTask$(({ track }) => {
     const success = track(() => createGlide.value?.success);
 
-    if (success && messengerForm.value) {
-      messengerForm.value.reset();
+    if (success) {
+      if (messengerForm.value) {
+        messengerForm.value.reset();
+      }
+    } else {
+      addSnackbar('Error on send glide', 'error');
     }
   });
 
