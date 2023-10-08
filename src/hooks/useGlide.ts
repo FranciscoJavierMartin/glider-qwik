@@ -30,7 +30,11 @@ const useGlides = () => {
     }
   });
 
-  return { loadGlides, pageNumber, glideStore };
+  const addGlide = $((glide: Glide | null) => {
+    console.log(glide);
+  });
+
+  return { loadGlides, pageNumber, glideStore, addGlide };
 };
 
 export default useGlides;

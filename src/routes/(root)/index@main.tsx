@@ -4,24 +4,31 @@ import GlidePost from '@/components/glides/GlidePost';
 import Messenger from '@/components/messenger/Messenger';
 import { getSupabaseServerClient } from '@/utils/getSupabaseClient';
 import useGlides from '@/hooks/useGlide';
+import type { Glide } from '@/types/glide';
 
 export const useCreateGlide = routeAction$(
   async ({ content }, request) => {
     const supabaseClient = getSupabaseServerClient(request);
     const user = (await supabaseClient.auth.getSession()).data.session?.user;
     let success: boolean = false;
+    let glide: Glide | null = null;
 
     if (user) {
-      const { error } = await supabaseClient
+      const { error, data } = await supabaseClient
         .from('glides')
-        .insert({ uid: user.id, content });
+        .insert({ uid: user.id, content })
+        .select(
+          'id, content, likesCount, subglidesCount, date, user:users (nickName, avatar)'
+        )
+        .single();
 
       if (!error) {
         success = true;
+        glide = { ...data, user: data.user[0] };
       }
     }
 
-    return { success };
+    return { success, glide };
   },
   zod$({
     content: z
