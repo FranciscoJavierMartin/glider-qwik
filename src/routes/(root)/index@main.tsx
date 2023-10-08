@@ -5,6 +5,7 @@ import Messenger from '@/components/messenger/Messenger';
 import { getSupabaseServerClient } from '@/utils/getSupabaseClient';
 import useGlides from '@/hooks/useGlide';
 import type { Glide } from '@/types/glide';
+import type { User } from '@/types/user';
 
 export const useCreateGlide = routeAction$(
   async ({ content }, request) => {
@@ -24,7 +25,7 @@ export const useCreateGlide = routeAction$(
 
       if (!error) {
         success = true;
-        glide = { ...data, user: data.user[0] };
+        glide = { ...data, user: data.user as Partial<User> };
       }
     }
 

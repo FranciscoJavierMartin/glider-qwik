@@ -10,12 +10,14 @@ import { HiPhotoOutline } from '@qwikest/icons/heroicons';
 import { useCreateGlide } from '@/routes/(root)/index@main';
 import { AuthContext } from '@/providers/auth/AuthProvider';
 import useSnackbar from '@/hooks/useSnackbar';
+import useGlides from '@/hooks/useGlide';
 
 export default component$(() => {
   const messengerForm = useSignal<HTMLFormElement>();
   const authState = useContext(AuthContext);
   const createGlide = useCreateGlide();
   const { addSnackbar } = useSnackbar();
+  const { addGlide } = useGlides();
 
   const autoSize = $((e: Event) => {
     const element = e.target as HTMLTextAreaElement;
@@ -32,7 +34,7 @@ export default component$(() => {
         messengerForm.value.reset();
       }
       // DON'T CHANGE
-    } else if(success === false) {
+    } else if (success === false) {
       addSnackbar('Error on send glide', 'error');
     }
   });
@@ -50,7 +52,16 @@ export default component$(() => {
         </div>
       </div>
       {/* MESSENGER START */}
-      <Form class='flex-it flex-grow' action={createGlide} ref={messengerForm}>
+      <Form
+        class='flex-it flex-grow'
+        action={createGlide}
+        ref={messengerForm}
+        onSubmitCompleted$={() => {
+          if (createGlide.value?.success && createGlide.value.glide) {
+            addGlide(createGlide.value.glide);
+          }
+        }}
+      >
         <div class='flex-it'>
           <textarea
             name='content'
