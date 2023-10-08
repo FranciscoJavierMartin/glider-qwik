@@ -5,28 +5,43 @@ type GlideStore = {
   pages: {
     [key: string]: { glides: Glide[] };
   };
+  nextGlide: number;
+  isLastGlide: boolean;
 };
 
-const initialStore: GlideStore = { pages: {} };
+const initialStore: GlideStore = {
+  pages: {},
+  nextGlide: 0,
+  isLastGlide: false,
+};
 
 const useGlides = () => {
   const pageNumber = useSignal<number>(1);
   const glideStore = useStore<GlideStore>(initialStore);
 
   const loadGlides = $(async () => {
-    try {
-      // TODO: Change url
-      const response = await fetch('http://localhost:3501/api/glides');
-      const { glides } = await response.json();
+    if (!glideStore.isLastGlide) {
+      try {
+        // TODO: Change url
+        const response = await fetch(
+          `http://localhost:3501/api/glides?nextGlide=${glideStore.nextGlide}`
+        );
+        const { glides, nextGlide, isLastGlide } = await response.json();
 
-      if (glides.length) {
-        glideStore.pages = {
-          ...glideStore.pages,
-          [pageNumber.value]: { glides },
-        };
+        if (glides.length) {
+          glideStore.pages = {
+            ...glideStore.pages,
+            [pageNumber.value]: { glides },
+          };
+
+          glideStore.nextGlide = nextGlide;
+        }
+        
+        pageNumber.value++;
+        glideStore.isLastGlide = isLastGlide;
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log(error);
     }
   });
 

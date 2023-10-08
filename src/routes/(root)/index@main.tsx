@@ -1,4 +1,11 @@
-import { Resource, component$, useResource$ } from '@builder.io/qwik';
+import {
+  Resource,
+  component$,
+  useResource$,
+  useSignal,
+  $,
+  useOnWindow,
+} from '@builder.io/qwik';
 import { routeAction$, z, zod$ } from '@builder.io/qwik-city';
 import GlidePost from '@/components/glides/GlidePost';
 import Messenger from '@/components/messenger/Messenger';
@@ -39,12 +46,25 @@ export const useCreateGlide = routeAction$(
 );
 
 export default component$(() => {
-  const { glideStore, pageNumber, loadGlides } = useGlides();
+  const lastItemRef = useSignal<HTMLDivElement>();
+  // const { glideStore, pageNumber, loadGlides } = useGlides();
+  const glidesHook = useGlides();
 
   const glides = useResource$(async () => {
-    await loadGlides();
-    return glideStore;
+    await glidesHook.loadGlides();
+    return glidesHook.glideStore;
   });
+
+  const loadNewItems = $(() => {
+    if (
+      lastItemRef.value &&
+      lastItemRef.value.getBoundingClientRect().top <= window.innerHeight
+    ) {
+      glidesHook.loadGlides();
+    }
+  });
+
+  useOnWindow('scroll', loadNewItems);
 
   return (
     <>
@@ -54,14 +74,19 @@ export default component$(() => {
         value={glides}
         onRejected={() => <p>Failed</p>}
         onPending={() => <p>Loading...</p>}
-        onResolved={(glides) => {
+        onResolved={() => {
           return (
             <>
-              {Array.from({ length: pageNumber.value }).map((_, page) =>
-                glides.pages[page + 1].glides.map((glide) => (
-                  <GlidePost key={glide.id} glide={glide} />
-                ))
-              )}
+              <>
+                {Array.from({ length: glidesHook.pageNumber.value }).map(
+                  (_, page) =>
+                    glidesHook.glideStore.pages[page + 1]?.glides.map(
+                      (glide) => <GlidePost key={glide.id} glide={glide} />
+                    )
+                )}
+              </>
+              <div ref={lastItemRef} />
+              <div class='h-96' />
             </>
           );
         }}
