@@ -1,5 +1,9 @@
 import { Slot, component$ } from '@builder.io/qwik';
-import { type DocumentHead, type RequestHandler } from '@builder.io/qwik-city';
+import {
+  useLocation,
+  type DocumentHead,
+  type RequestHandler,
+} from '@builder.io/qwik-city';
 import MainSidebar from '@/components/sidebars/Main';
 import TrendsSidebar from '@/components/sidebars/Trends';
 import { getSupabaseServerClient } from '@/utils/getSupabaseClient';
@@ -19,7 +23,12 @@ export const onRequest: RequestHandler = async (request) => {
   await request.next();
 };
 
+const pageTitle = new Map<string, string>();
+pageTitle.set('/', 'Home');
+pageTitle.set('/profile/', 'Profile');
+
 export default component$(() => {
+  const location = useLocation();
   useAuthChange();
   useSnackbar();
 
@@ -34,7 +43,7 @@ export default component$(() => {
                 <div class='flex-it md:max-w-152 w-full border-x-1 border-solid border-gray-700'>
                   <div class='sticky z-10 flex-it top-0'>
                     <div class='flex-it h-14 p-4 xl:text-xl text-sm font-bold z-10 backdrop-blur-md bg-opacity-70'>
-                      Home
+                      {pageTitle.get(location.url.pathname)}
                     </div>
                   </div>
                   <Slot />
