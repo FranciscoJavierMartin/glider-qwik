@@ -47,7 +47,6 @@ export const useCreateGlide = routeAction$(
 
 export default component$(() => {
   const lastItemRef = useSignal<HTMLDivElement>();
-  // const { glideStore, pageNumber, loadGlides } = useGlides();
   const glidesHook = useGlides();
 
   const glides = useResource$(async () => {

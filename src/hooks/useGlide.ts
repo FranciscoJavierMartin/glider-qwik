@@ -48,7 +48,7 @@ const useGlides = () => {
   const addGlide = $((glide: Glide | null) => {
     const page = 1;
     if (glide) {
-      if (glideStore.pages[page]) {
+      if (!glideStore.pages[page]) {
         glideStore.pages[page] = { glides: [] };
       }
 
