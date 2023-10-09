@@ -18,18 +18,18 @@ export const links = [
     icon: HiUserCircleOutline,
   },
   {
+    name: 'Notifications',
+    href: '/',
+    icon: HiBellOutline,
+  },
+  {
     name: 'More',
     href: '/more',
     icon: HiEllipsisHorizontalCircleOutline,
   },
   {
-    name: 'Login',
-    href: '/login',
-    icon: HiBellOutline,
-  },
-  {
-    name: 'Register',
-    href: '/register',
+    name: 'Discover',
+    href: '/',
     icon: HiMapOutline,
   },
 ];

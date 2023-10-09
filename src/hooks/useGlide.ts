@@ -1,4 +1,4 @@
-import { $, useSignal, useStore } from '@builder.io/qwik';
+import { $, useSignal, useStore, useTask$ } from '@builder.io/qwik';
 import type { Glide } from '@/types/glide';
 
 type GlideStore = {
@@ -36,7 +36,7 @@ const useGlides = () => {
 
           glideStore.nextGlide = nextGlide;
         }
-        
+
         pageNumber.value++;
         glideStore.isLastGlide = isLastGlide;
       } catch (error) {
@@ -54,6 +54,10 @@ const useGlides = () => {
 
       glideStore.pages[page].glides = [glide, ...glideStore.pages[page].glides];
     }
+  });
+
+  useTask$(async () => {
+    await loadGlides();
   });
 
   return { loadGlides, pageNumber, glideStore, addGlide };
