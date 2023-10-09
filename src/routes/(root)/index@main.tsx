@@ -1,11 +1,4 @@
-import {
-  Resource,
-  component$,
-  useResource$,
-  useSignal,
-  $,
-  useOnWindow,
-} from '@builder.io/qwik';
+import { component$, useSignal, $, useOnWindow } from '@builder.io/qwik';
 import { routeAction$, z, zod$ } from '@builder.io/qwik-city';
 import GlidePost from '@/components/glides/GlidePost';
 import Messenger from '@/components/messenger/Messenger';
@@ -49,11 +42,6 @@ export default component$(() => {
   const lastItemRef = useSignal<HTMLDivElement>();
   const glidesHook = useGlides();
 
-  const glides = useResource$(async () => {
-    await glidesHook.loadGlides();
-    return glidesHook.glideStore;
-  });
-
   const loadNewItems = $(() => {
     if (
       lastItemRef.value &&
@@ -69,27 +57,16 @@ export default component$(() => {
     <>
       <Messenger />
       <div class='h-px bg-gray-700 my-1' />
-      <Resource
-        value={glides}
-        onRejected={() => <p>Failed</p>}
-        onPending={() => <p>Loading...</p>}
-        onResolved={() => {
-          return (
-            <>
-              <>
-                {Array.from({ length: glidesHook.pageNumber.value }).map(
-                  (_, page) =>
-                    glidesHook.glideStore.pages[page + 1]?.glides.map(
-                      (glide) => <GlidePost key={glide.id} glide={glide} />
-                    )
-                )}
-              </>
-              <div ref={lastItemRef} />
-              <div class='h-96' />
-            </>
-          );
-        }}
-      />
+      <>
+        {Array.from({ length: glidesHook.pageNumber.value }).map(
+          (_, page) =>
+            glidesHook.glideStore.pages[page + 1]?.glides.map((glide) => (
+              <GlidePost key={glide.id} glide={glide} />
+            ))
+        )}
+      </>
+      <div ref={lastItemRef} />
+      <div class='h-96' />
     </>
   );
 });
